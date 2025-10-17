@@ -20,7 +20,9 @@ export function SiteHeader() {
         <Link to="/" className="flex items-center gap-2">
           <div className="size-8 rounded-md bg-gradient-to-br from-primary to-violet-500" />
           <span className="font-extrabold tracking-tight text-xl">
-            <span className="bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">Codecafe</span>
+            <span className="bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">
+              Codecafe
+            </span>
           </span>
         </Link>
 

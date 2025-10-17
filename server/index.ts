@@ -6,8 +6,18 @@ import { initSchema, dbEnabled } from "./db/mysql";
 import { login } from "./routes/admin";
 import { requireAuth } from "./middleware/auth";
 import { listBlogs, createBlog, updateBlog, deleteBlog } from "./routes/blogs";
-import { listCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy } from "./routes/case-studies";
-import { listServices, createService, updateService, deleteService } from "./routes/services";
+import {
+  listCaseStudies,
+  createCaseStudy,
+  updateCaseStudy,
+  deleteCaseStudy,
+} from "./routes/case-studies";
+import {
+  listServices,
+  createService,
+  updateService,
+  deleteService,
+} from "./routes/services";
 import { uploadRouter } from "./routes/upload";
 
 export function createServer() {

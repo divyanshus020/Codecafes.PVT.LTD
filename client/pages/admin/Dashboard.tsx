@@ -9,23 +9,44 @@ export default function AdminDashboard() {
       <div className="container">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Signed in as {user?.username}. {devMode ? "(dev mode)" : null}</p>
+            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+              Admin Dashboard
+            </h1>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Signed in as {user?.username}. {devMode ? "(dev mode)" : null}
+            </p>
           </div>
-          <Button variant="outline" onClick={logout}>Sign out</Button>
+          <Button variant="outline" onClick={logout}>
+            Sign out
+          </Button>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <Link to="/admin/blogs" className="rounded-xl border p-6 hover:bg-accent/40 transition-colors">
+          <Link
+            to="/admin/blogs"
+            className="rounded-xl border p-6 hover:bg-accent/40 transition-colors"
+          >
             <h3 className="font-semibold text-lg">Blogs</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Create and manage blog posts</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Create and manage blog posts
+            </p>
           </Link>
-          <Link to="/admin/case-studies" className="rounded-xl border p-6 hover:bg-accent/40 transition-colors">
+          <Link
+            to="/admin/case-studies"
+            className="rounded-xl border p-6 hover:bg-accent/40 transition-colors"
+          >
             <h3 className="font-semibold text-lg">Case Studies</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Publish client success stories</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Publish client success stories
+            </p>
           </Link>
-          <Link to="/admin/services" className="rounded-xl border p-6 hover:bg-accent/40 transition-colors">
+          <Link
+            to="/admin/services"
+            className="rounded-xl border p-6 hover:bg-accent/40 transition-colors"
+          >
             <h3 className="font-semibold text-lg">Services</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Update offerings and pricing</p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Update offerings and pricing
+            </p>
           </Link>
         </div>
       </div>

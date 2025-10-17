@@ -77,8 +77,24 @@ const App = () => (
               <Route element={<RequireAuth />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/blogs" element={<AdminBlogs />} />
-                <Route path="/admin/case-studies" element={<PlaceholderPage title="Case Studies" description="Manage case studies here." />} />
-                <Route path="/admin/services" element={<PlaceholderPage title="Services" description="Manage services here." />} />
+                <Route
+                  path="/admin/case-studies"
+                  element={
+                    <PlaceholderPage
+                      title="Case Studies"
+                      description="Manage case studies here."
+                    />
+                  }
+                />
+                <Route
+                  path="/admin/services"
+                  element={
+                    <PlaceholderPage
+                      title="Services"
+                      description="Manage services here."
+                    />
+                  }
+                />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

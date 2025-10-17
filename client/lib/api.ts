@@ -11,7 +11,12 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export async function apiFetch<T = unknown>(
   path: string,
-  options: { method?: HttpMethod; token?: string; body?: any; headers?: Record<string, string> } = {},
+  options: {
+    method?: HttpMethod;
+    token?: string;
+    body?: any;
+    headers?: Record<string, string>;
+  } = {},
 ): Promise<T> {
   const base = API_BASE_URL;
   const url = base
@@ -35,5 +40,9 @@ export async function apiFetch<T = unknown>(
     throw new Error(`API error ${res.status}: ${text}`);
   }
   const ct = res.headers.get("content-type") || "";
-  return (ct.includes("application/json") ? await res.json() : (await res.text() as any)) as T;
+  return (
+    ct.includes("application/json")
+      ? await res.json()
+      : ((await res.text()) as any)
+  ) as T;
 }

@@ -17,7 +17,11 @@ const LS_KEY = "codecafe_blogs";
 interface BlogStore {
   list(token?: string): Promise<Blog[]>;
   create(input: Omit<Blog, "id">, token?: string): Promise<Blog>;
-  update(id: ID, input: Partial<Omit<Blog, "id">>, token?: string): Promise<Blog>;
+  update(
+    id: ID,
+    input: Partial<Omit<Blog, "id">>,
+    token?: string,
+  ): Promise<Blog>;
   remove(id: ID, token?: string): Promise<void>;
 }
 
@@ -61,8 +65,16 @@ class RemoteBlogStore implements BlogStore {
   async create(input: Omit<Blog, "id">, token?: string): Promise<Blog> {
     return apiFetch<Blog>("/api/blogs", { method: "POST", body: input, token });
   }
-  async update(id: ID, input: Partial<Omit<Blog, "id">>, token?: string): Promise<Blog> {
-    return apiFetch<Blog>(`/api/blogs/${id}`, { method: "PUT", body: input, token });
+  async update(
+    id: ID,
+    input: Partial<Omit<Blog, "id">>,
+    token?: string,
+  ): Promise<Blog> {
+    return apiFetch<Blog>(`/api/blogs/${id}`, {
+      method: "PUT",
+      body: input,
+      token,
+    });
   }
   async remove(id: ID, token?: string): Promise<void> {
     await apiFetch(`/api/blogs/${id}`, { method: "DELETE", token });
@@ -70,4 +82,6 @@ class RemoteBlogStore implements BlogStore {
 }
 
 const USE_LOCAL = Boolean(import.meta.env.VITE_AUTH_FAKE);
-export const BlogStore: BlogStore = USE_LOCAL ? new LocalBlogStore() : new RemoteBlogStore();
+export const BlogStore: BlogStore = USE_LOCAL
+  ? new LocalBlogStore()
+  : new RemoteBlogStore();

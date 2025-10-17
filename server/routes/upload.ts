@@ -11,7 +11,9 @@ const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, uploadsDir),
   filename: (_req, file, cb) => {
     const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext).replace(/[^a-z0-9-_]+/gi, "-");
+    const base = path
+      .basename(file.originalname, ext)
+      .replace(/[^a-z0-9-_]+/gi, "-");
     const name = `${Date.now()}-${Math.random().toString(36).slice(2)}-${base}${ext}`;
     cb(null, name);
   },
@@ -32,5 +34,12 @@ uploadRouter.post("/image", requireAuth, upload.single("file"), (req, res) => {
   const f = (req as any).file as Express.Multer.File | undefined;
   if (!f) return res.status(400).json({ error: "file is required" });
   const publicUrl = `/uploads/${f.filename}`;
-  res.status(201).json({ url: publicUrl, filename: f.filename, size: f.size, type: f.mimetype });
+  res
+    .status(201)
+    .json({
+      url: publicUrl,
+      filename: f.filename,
+      size: f.size,
+      type: f.mimetype,
+    });
 });

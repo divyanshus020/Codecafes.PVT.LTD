@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-export function PlaceholderPage({ title, description }: { title: string; description?: string }) {
+export function PlaceholderPage({
+  title,
+  description,
+}: {
+  title: string;
+  description?: string;
+}) {
   return (
     <section className="py-24">
       <div className="container text-center">
@@ -13,7 +19,8 @@ export function PlaceholderPage({ title, description }: { title: string; descrip
           {title}
         </h1>
         <p className="mt-4 max-w-2xl mx-auto text-muted-foreground">
-          {description || "This page will be tailored to your needs. Tell me what content and layout you want here and I'll build it next."}
+          {description ||
+            "This page will be tailored to your needs. Tell me what content and layout you want here and I'll build it next."}
         </p>
         <div className="mt-8 flex items-center justify-center gap-3">
           <Button asChild>

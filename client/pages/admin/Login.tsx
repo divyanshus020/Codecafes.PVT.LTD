@@ -62,9 +62,13 @@ export default function AdminLogin() {
                 {error}
               </div>
             )}
-            <Button type="submit" className="w-full">Sign in</Button>
+            <Button type="submit" className="w-full">
+              Sign in
+            </Button>
             <div className="text-center text-xs text-muted-foreground">
-              <Link to="/" className="hover:text-foreground">← Back to site</Link>
+              <Link to="/" className="hover:text-foreground">
+                ← Back to site
+              </Link>
             </div>
           </form>
         </div>

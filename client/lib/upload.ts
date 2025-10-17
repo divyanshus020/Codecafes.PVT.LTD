@@ -1,4 +1,7 @@
-export async function uploadImage(file: File, token: string): Promise<{ url: string }>{
+export async function uploadImage(
+  file: File,
+  token: string,
+): Promise<{ url: string }> {
   const form = new FormData();
   form.append("file", file);
   const res = await fetch("/api/upload/image", {

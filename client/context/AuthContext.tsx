@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { apiFetch } from "@/lib/api";
 
 interface AuthState {
@@ -43,27 +50,33 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const login = useCallback(async (username: string, password: string) => {
-    if (!devMode) {
-      const resp = await apiFetch<{ token: string; user: { username: string } }>("/api/admin/login", {
-        method: "POST",
-        body: { username, password },
-      });
-      setToken(resp.token);
-      setUser(resp.user);
-      persist(resp.token, resp.user);
-      return;
-    }
-    if (username === ADMIN_DEV.username && password === ADMIN_DEV.password) {
-      const t = "dev-demo-token";
-      const u = { username };
-      setToken(t);
-      setUser(u);
-      persist(t, u);
-      return;
-    }
-    throw new Error("Invalid credentials");
-  }, [devMode]);
+  const login = useCallback(
+    async (username: string, password: string) => {
+      if (!devMode) {
+        const resp = await apiFetch<{
+          token: string;
+          user: { username: string };
+        }>("/api/admin/login", {
+          method: "POST",
+          body: { username, password },
+        });
+        setToken(resp.token);
+        setUser(resp.user);
+        persist(resp.token, resp.user);
+        return;
+      }
+      if (username === ADMIN_DEV.username && password === ADMIN_DEV.password) {
+        const t = "dev-demo-token";
+        const u = { username };
+        setToken(t);
+        setUser(u);
+        persist(t, u);
+        return;
+      }
+      throw new Error("Invalid credentials");
+    },
+    [devMode],
+  );
 
   const logout = useCallback(() => {
     setToken(null);

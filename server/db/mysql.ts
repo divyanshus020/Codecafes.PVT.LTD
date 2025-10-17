@@ -8,7 +8,9 @@ const {
   MYSQL_DATABASE = "",
 } = process.env;
 
-export const dbEnabled = Boolean(MYSQL_HOST && MYSQL_DATABASE && MYSQL_USER !== "");
+export const dbEnabled = Boolean(
+  MYSQL_HOST && MYSQL_DATABASE && MYSQL_USER !== "",
+);
 
 export const pool = mysql.createPool({
   host: MYSQL_HOST || "localhost",
