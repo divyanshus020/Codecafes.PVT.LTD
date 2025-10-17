@@ -1,4 +1,4 @@
-import { API_BASE_URL, apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 
 export type ID = string;
 export interface Blog {
@@ -69,4 +69,5 @@ class RemoteBlogStore implements BlogStore {
   }
 }
 
-export const BlogStore: BlogStore = API_BASE_URL ? new RemoteBlogStore() : new LocalBlogStore();
+const USE_LOCAL = Boolean(import.meta.env.VITE_AUTH_FAKE);
+export const BlogStore: BlogStore = USE_LOCAL ? new LocalBlogStore() : new RemoteBlogStore();
