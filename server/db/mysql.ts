@@ -1,19 +1,21 @@
 import mysql from "mysql2/promise";
 
 const {
-  MYSQL_HOST = "localhost",
+  MYSQL_HOST = "",
   MYSQL_PORT = "3306",
-  MYSQL_USER = "root",
+  MYSQL_USER = "",
   MYSQL_PASSWORD = "",
-  MYSQL_DATABASE = "codecafe",
+  MYSQL_DATABASE = "",
 } = process.env;
 
+export const dbEnabled = Boolean(MYSQL_HOST && MYSQL_DATABASE && MYSQL_USER !== "");
+
 export const pool = mysql.createPool({
-  host: MYSQL_HOST,
+  host: MYSQL_HOST || "localhost",
   port: Number(MYSQL_PORT),
-  user: MYSQL_USER,
-  password: MYSQL_PASSWORD,
-  database: MYSQL_DATABASE,
+  user: MYSQL_USER || "root",
+  password: MYSQL_PASSWORD || "",
+  database: MYSQL_DATABASE || "codecafe",
   connectionLimit: 10,
   namedPlaceholders: true,
 });
