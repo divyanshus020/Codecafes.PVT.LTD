@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
-import { pool } from "../db/mysql";
+import { pool, dbEnabled } from "../db/mysql";
 
 export const listCaseStudies: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const isAuthed = Boolean((req as any).user);
   const [rows] = await pool.query(
     isAuthed ? "SELECT * FROM case_studies ORDER BY created_at DESC" : "SELECT * FROM case_studies WHERE status='published' ORDER BY published_at DESC, created_at DESC",
@@ -10,6 +11,7 @@ export const listCaseStudies: RequestHandler = async (req, res) => {
 };
 
 export const createCaseStudy: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { title, slug, summary, content, cover_image, status, published_at } = req.body || {};
   if (!title || !slug || !content) return res.status(400).json({ error: "title, slug, content required" });
   const [dup] = await pool.query("SELECT id FROM case_studies WHERE slug = :slug", { slug });
@@ -24,6 +26,7 @@ export const createCaseStudy: RequestHandler = async (req, res) => {
 };
 
 export const updateCaseStudy: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   const { title, slug, summary, content, cover_image, status, published_at } = req.body || {};
   const [exists] = await pool.query("SELECT * FROM case_studies WHERE id = :id", { id });
@@ -49,6 +52,7 @@ export const updateCaseStudy: RequestHandler = async (req, res) => {
 };
 
 export const deleteCaseStudy: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   await pool.query("DELETE FROM case_studies WHERE id = :id", { id });
   res.status(204).end();
