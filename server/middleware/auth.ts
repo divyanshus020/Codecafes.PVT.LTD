@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { verifyToken } from "@/server/utils/jwt";
+import { verifyToken } from "../utils/jwt";
 
 export const requireAuth: RequestHandler = (req, res, next) => {
   const header = req.headers.authorization || "";
