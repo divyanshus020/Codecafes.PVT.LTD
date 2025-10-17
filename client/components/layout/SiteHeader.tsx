@@ -95,6 +95,9 @@ export function SiteHeader() {
                 {item.label}
               </NavLink>
             ))}
+            <Button asChild variant="ghost" size="sm" className="w-full">
+              <Link to="/admin/login">Admin</Link>
+            </Button>
             <Button asChild size="sm" className="mt-2 w-full">
               <Link to="/contact">Get a quote</Link>
             </Button>
