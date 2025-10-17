@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { API_BASE_URL, apiFetch } from "@/lib/api";
+import { apiFetch } from "@/lib/api";
 
 interface AuthState {
   token: string | null;
@@ -22,7 +22,7 @@ const AuthContext = createContext<AuthState | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<{ username: string } | null>(null);
-  const devMode = !API_BASE_URL;
+  const devMode = Boolean(import.meta.env.VITE_AUTH_FAKE);
 
   useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const login = useCallback(async (username: string, password: string) => {
-    if (API_BASE_URL) {
+    if (!devMode) {
       const resp = await apiFetch<{ token: string; user: { username: string } }>("/api/admin/login", {
         method: "POST",
         body: { username, password },
@@ -63,7 +63,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
     throw new Error("Invalid credentials");
-  }, []);
+  }, [devMode]);
 
   const logout = useCallback(() => {
     setToken(null);
