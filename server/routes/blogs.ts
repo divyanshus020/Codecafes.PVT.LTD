@@ -1,7 +1,8 @@
 import { RequestHandler } from "express";
-import { pool } from "../db/mysql";
+import { pool, dbEnabled } from "../db/mysql";
 
 export const listBlogs: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const isAuthed = Boolean((req as any).user);
   const [rows] = await pool.query(
     isAuthed ? "SELECT * FROM blogs ORDER BY created_at DESC" : "SELECT * FROM blogs WHERE status='published' ORDER BY published_at DESC, created_at DESC",
@@ -10,6 +11,7 @@ export const listBlogs: RequestHandler = async (req, res) => {
 };
 
 export const createBlog: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { title, slug, excerpt, content, cover_image, status, published_at } = req.body || {};
   if (!title || !slug || !content) return res.status(400).json({ error: "title, slug, content required" });
   const [dup] = await pool.query("SELECT id FROM blogs WHERE slug = :slug", { slug });
@@ -24,6 +26,7 @@ export const createBlog: RequestHandler = async (req, res) => {
 };
 
 export const updateBlog: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   const { title, slug, excerpt, content, cover_image, status, published_at } = req.body || {};
   const [exists] = await pool.query("SELECT * FROM blogs WHERE id = :id", { id });
@@ -49,6 +52,7 @@ export const updateBlog: RequestHandler = async (req, res) => {
 };
 
 export const deleteBlog: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   await pool.query("DELETE FROM blogs WHERE id = :id", { id });
   res.status(204).end();
