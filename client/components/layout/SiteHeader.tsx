@@ -42,6 +42,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <Button asChild variant="ghost" size="sm">
+            <Link to="/admin/login">Admin</Link>
+          </Button>
           <Button asChild size="sm" className="shadow-sm">
             <Link to="/contact">Get a quote</Link>
           </Button>
