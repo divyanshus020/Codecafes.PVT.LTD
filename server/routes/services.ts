@@ -1,12 +1,14 @@
 import { RequestHandler } from "express";
-import { pool } from "../db/mysql";
+import { pool, dbEnabled } from "../db/mysql";
 
 export const listServices: RequestHandler = async (_req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const [rows] = await pool.query("SELECT * FROM services ORDER BY title ASC");
   res.json(rows);
 };
 
 export const createService: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { title, slug, description, price } = req.body || {};
   if (!title || !slug) return res.status(400).json({ error: "title and slug required" });
   const [dup] = await pool.query("SELECT id FROM services WHERE slug = :slug", { slug });
@@ -21,6 +23,7 @@ export const createService: RequestHandler = async (req, res) => {
 };
 
 export const updateService: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   const { title, slug, description, price } = req.body || {};
   const [exists] = await pool.query("SELECT * FROM services WHERE id = :id", { id });
@@ -43,6 +46,7 @@ export const updateService: RequestHandler = async (req, res) => {
 };
 
 export const deleteService: RequestHandler = async (req, res) => {
+  if (!dbEnabled) return res.status(503).json({ error: "Database not configured" });
   const { id } = req.params as any;
   await pool.query("DELETE FROM services WHERE id = :id", { id });
   res.status(204).end();
