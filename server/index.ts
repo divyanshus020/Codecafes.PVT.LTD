@@ -19,7 +19,9 @@ export function createServer() {
   app.use(express.urlencoded({ extended: true }));
 
   // Boot
-  initSchema().catch((e) => console.error("DB init failed", e));
+  if (dbEnabled) {
+    initSchema().catch((e) => console.error("DB init failed", e));
+  }
   // Static uploads
   app.use("/uploads", express.static("public/uploads"));
 
