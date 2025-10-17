@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { pool } from "@/server/db/mysql";
+import { pool } from "../db/mysql";
 
 export const listServices: RequestHandler = async (_req, res) => {
   const [rows] = await pool.query("SELECT * FROM services ORDER BY title ASC");
