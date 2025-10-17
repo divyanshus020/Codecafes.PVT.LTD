@@ -1,4 +1,11 @@
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+// Set VITE_API_BASE_URL to your PHP backend base URL, e.g. "https://api.codecafe.dev".
+// Expected endpoints:
+// - POST   /api/admin/login            { username, password } -> { token, user }
+// - GET    /api/blogs                  -> Blog[]
+// - POST   /api/blogs                  { ...BlogFields } -> Blog
+// - PUT    /api/blogs/:id              { ...BlogFields } -> Blog
+// - DELETE /api/blogs/:id              -> 204
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
