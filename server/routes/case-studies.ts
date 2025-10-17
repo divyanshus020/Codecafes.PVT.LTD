@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { pool } from "@/server/db/mysql";
+import { pool } from "../db/mysql";
 
 export const listCaseStudies: RequestHandler = async (req, res) => {
   const isAuthed = Boolean((req as any).user);
