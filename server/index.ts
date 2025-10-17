@@ -8,6 +8,7 @@ import { requireAuth } from "./middleware/auth";
 import { listBlogs, createBlog, updateBlog, deleteBlog } from "./routes/blogs";
 import { listCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy } from "./routes/case-studies";
 import { listServices, createService, updateService, deleteService } from "./routes/services";
+import { uploadRouter } from "./routes/upload";
 
 export function createServer() {
   const app = express();
@@ -19,6 +20,8 @@ export function createServer() {
 
   // Boot
   initSchema().catch((e) => console.error("DB init failed", e));
+  // Static uploads
+  app.use("/uploads", express.static("public/uploads"));
 
   // Health
   app.get("/api/ping", (_req, res) => {
@@ -49,6 +52,9 @@ export function createServer() {
   app.post("/api/services", requireAuth, createService);
   app.put("/api/services/:id", requireAuth, updateService);
   app.delete("/api/services/:id", requireAuth, deleteService);
+
+  // Uploads
+  app.use("/api/upload", uploadRouter);
 
   return app;
 }

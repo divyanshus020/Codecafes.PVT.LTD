@@ -2,6 +2,33 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Blog, BlogStore } from "@/lib/datastore";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
+import { uploadImage } from "@/lib/upload";
+
+function UploadField({ onUploaded }: { onUploaded: (url: string) => void }) {
+  const { token } = useAuth();
+  const [pending, setPending] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  return (
+    <div className="flex items-center gap-2">
+      <input type="file" accept="image/*" onChange={async (e) => {
+        const file = e.target.files?.[0];
+        if (!file || !token) return;
+        setPending(true);
+        setErr(null);
+        try {
+          const { url } = await uploadImage(file, token);
+          onUploaded(url);
+        } catch (e: any) {
+          setErr(e.message || "Upload failed");
+        } finally {
+          setPending(false);
+        }
+      }} />
+      {pending && <span className="text-xs text-muted-foreground">Uploading…</span>}
+      {err && <span className="text-xs text-destructive">{err}</span>}
+    </div>
+  );
+}
 
 export default function AdminBlogs() {
   const { token, devMode } = useAuth();
@@ -103,8 +130,20 @@ export default function AdminBlogs() {
             <label className="text-sm font-medium">Content (Markdown or HTML)</label>
             <textarea className="rounded-md border bg-background px-3 py-2" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} rows={6} required />
 
-            <label className="text-sm font-medium">Cover Image URL</label>
-            <input className="rounded-md border bg-background px-3 py-2" value={form.cover_image || ""} onChange={(e) => setForm({ ...form, cover_image: e.target.value })} />
+            <label className="text-sm font-medium">Cover Image</label>
+            <div className="grid gap-2">
+              <input
+                type="url"
+                placeholder="https://..."
+                className="rounded-md border bg-background px-3 py-2"
+                value={form.cover_image || ""}
+                onChange={(e) => setForm({ ...form, cover_image: e.target.value })}
+              />
+              <UploadField onUploaded={(url) => setForm({ ...form, cover_image: url })} />
+              {form.cover_image ? (
+                <img src={form.cover_image} alt="cover" className="mt-2 h-28 w-full rounded-md object-cover" />
+              ) : null}
+            </div>
 
             <label className="text-sm font-medium">Status</label>
             <select className="rounded-md border bg-background px-3 py-2" value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as any })}>
