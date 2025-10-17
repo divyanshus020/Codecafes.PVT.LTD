@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { signToken } from "@/server/utils/jwt";
+import { signToken } from "../utils/jwt";
 import bcrypt from "bcryptjs";
 
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || "sharmadivyanshu281";
