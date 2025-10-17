@@ -8,6 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Layout from "@/components/layout/Layout";
+import { PlaceholderPage } from "@/components/layout/PlaceholderPage";
 
 const queryClient = new QueryClient();
 
@@ -18,9 +20,56 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
+          <Route element={<Layout />}> 
+            <Route path="/" element={<Index />} />
+            <Route
+              path="/services"
+              element={
+                <PlaceholderPage
+                  title="Our Services"
+                  description="Explore how Codecafe delivers websites, apps, DevOps, AI consulting, and intelligent chatbots."
+                />
+              }
+            />
+            <Route
+              path="/case-studies"
+              element={
+                <PlaceholderPage
+                  title="Case Studies"
+                  description="Stories about measurable impact we created for our clients."
+                />
+              }
+            />
+            <Route
+              path="/portfolio"
+              element={
+                <PlaceholderPage
+                  title="Portfolio"
+                  description="A curated selection of projects showcasing our craft."
+                />
+              }
+            />
+            <Route
+              path="/blog"
+              element={
+                <PlaceholderPage
+                  title="Blog"
+                  description="Insights on engineering, design, and AI."
+                />
+              }
+            />
+            <Route
+              path="/contact"
+              element={
+                <PlaceholderPage
+                  title="Contact"
+                  description="Tell us about your idea. We'll respond within 24 hours."
+                />
+              }
+            />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
