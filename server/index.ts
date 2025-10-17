@@ -2,12 +2,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
-import { initSchema } from "@/server/db/mysql";
-import { login } from "@/server/routes/admin";
-import { requireAuth } from "@/server/middleware/auth";
-import { listBlogs, createBlog, updateBlog, deleteBlog } from "@/server/routes/blogs";
-import { listCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy } from "@/server/routes/case-studies";
-import { listServices, createService, updateService, deleteService } from "@/server/routes/services";
+import { initSchema } from "./db/mysql";
+import { login } from "./routes/admin";
+import { requireAuth } from "./middleware/auth";
+import { listBlogs, createBlog, updateBlog, deleteBlog } from "./routes/blogs";
+import { listCaseStudies, createCaseStudy, updateCaseStudy, deleteCaseStudy } from "./routes/case-studies";
+import { listServices, createService, updateService, deleteService } from "./routes/services";
 
 export function createServer() {
   const app = express();
