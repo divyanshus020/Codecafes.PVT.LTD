@@ -1,36 +1,43 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { Blog, BlogStore } from "@/lib/datastore";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
-import { ImageUpload } from "@/components/admin/ImageUpload";
 
-export default function AdminBlogs() {
-  const { token, devMode } = useAuth();
-  const [items, setItems] = useState<Blog[]>([]);
+interface Service {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  price: number | null;
+}
+
+export default function AdminServices() {
+  const { token } = useAuth();
+  const [items, setItems] = useState<Service[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const empty: Omit<Blog, "id"> = useMemo(
+  const empty: Omit<Service, "id"> = useMemo(
     () => ({
       title: "",
       slug: "",
-      excerpt: "",
-      content: "",
-      cover_image: "",
-      status: "draft",
-      published_at: null,
+      description: "",
+      price: null,
     }),
-    [],
+    []
   );
 
-  const [form, setForm] = useState<Omit<Blog, "id">>(empty);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<Omit<Service, "id">>(empty);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   async function load() {
     setLoading(true);
     setError(null);
     try {
-      const data = await BlogStore.list(token || undefined);
+      const res = await fetch("/api/services", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!res.ok) throw new Error("Failed to load");
+      const data = await res.json();
       setItems(data);
     } catch (e: any) {
       setError(e.message || "Failed to load");
@@ -49,16 +56,28 @@ export default function AdminBlogs() {
     setError(null);
     try {
       if (editingId) {
-        const updated = await BlogStore.update(
-          editingId,
-          form,
-          token || undefined,
-        );
-        setItems((prev) =>
-          prev.map((i) => (i.id === updated.id ? updated : i)),
-        );
+        const res = await fetch(`/api/services/${editingId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error("Update failed");
+        const updated = await res.json();
+        setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
       } else {
-        const created = await BlogStore.create(form, token || undefined);
+        const res = await fetch("/api/services", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error("Create failed");
+        const created = await res.json();
         setItems((prev) => [created, ...prev]);
       }
       setForm(empty);
@@ -73,17 +92,21 @@ export default function AdminBlogs() {
     }
   }
 
-  async function onDelete(id: string) {
-    if (!confirm("Delete this post?")) return;
+  async function onDelete(id: number) {
+    if (!confirm("Delete this service?")) return;
     try {
-      await BlogStore.remove(id, token || undefined);
+      const res = await fetch(`/api/services/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Delete failed");
       setItems((prev) => prev.filter((i) => i.id !== id));
     } catch (e: any) {
       setError(e.message || "Delete failed");
     }
   }
 
-  function onEdit(item: Blog) {
+  function onEdit(item: Service) {
     setEditingId(item.id);
     const { id, ...rest } = item;
     setForm(rest);
@@ -96,10 +119,10 @@ export default function AdminBlogs() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-              Blogs
+              Services
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {devMode ? "Local storage (dev)" : "Server (remote)"}
+              Manage your service offerings
             </p>
           </div>
         </div>
@@ -110,7 +133,7 @@ export default function AdminBlogs() {
             className="rounded-2xl border bg-card p-6 shadow-sm grid gap-3"
           >
             <h2 className="font-semibold">
-              {editingId ? "Edit post" : "New post"}
+              {editingId ? "Edit service" : "New service"}
             </h2>
             {error && (
               <div className="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -131,49 +154,31 @@ export default function AdminBlogs() {
               value={form.slug}
               onChange={(e) => setForm({ ...form, slug: e.target.value })}
               required
-              placeholder="unique-blog-slug"
-            />
-            <p className="text-xs text-muted-foreground">
-              URL-friendly identifier (must be unique, e.g., "my-first-blog")
-            </p>
-
-            <label className="text-sm font-medium">Excerpt</label>
-            <textarea
-              className="rounded-md border bg-background px-3 py-2"
-              value={form.excerpt}
-              onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
-              rows={2}
             />
 
-            <label className="text-sm font-medium">
-              Content (Markdown or HTML)
-            </label>
+            <label className="text-sm font-medium">Description</label>
             <textarea
               className="rounded-md border bg-background px-3 py-2"
-              value={form.content}
-              onChange={(e) => setForm({ ...form, content: e.target.value })}
-              rows={6}
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              rows={4}
               required
             />
 
-            <label className="text-sm font-medium">Cover Image</label>
-            <ImageUpload
-              value={form.cover_image || ""}
-              onChange={(url) => setForm({ ...form, cover_image: url })}
-              onClear={() => setForm({ ...form, cover_image: "" })}
-            />
-
-            <label className="text-sm font-medium">Status</label>
-            <select
+            <label className="text-sm font-medium">Price (optional)</label>
+            <input
+              type="number"
+              step="0.01"
               className="rounded-md border bg-background px-3 py-2"
-              value={form.status}
+              value={form.price || ""}
               onChange={(e) =>
-                setForm({ ...form, status: e.target.value as any })
+                setForm({
+                  ...form,
+                  price: e.target.value ? parseFloat(e.target.value) : null,
+                })
               }
-            >
-              <option value="draft">Draft</option>
-              <option value="published">Published</option>
-            </select>
+              placeholder="e.g., 5000"
+            />
 
             <div className="mt-2 flex items-center gap-2">
               <Button type="submit">{editingId ? "Update" : "Create"}</Button>
@@ -193,12 +198,12 @@ export default function AdminBlogs() {
           </form>
 
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <h2 className="font-semibold">All posts</h2>
+            <h2 className="font-semibold">All services</h2>
             {loading ? (
               <p className="mt-3 text-sm text-muted-foreground">Loading…</p>
             ) : items.length === 0 ? (
               <p className="mt-3 text-sm text-muted-foreground">
-                No posts yet.
+                No services yet.
               </p>
             ) : (
               <ul className="mt-3 divide-y">
@@ -208,8 +213,12 @@ export default function AdminBlogs() {
                       <div>
                         <div className="font-medium">{item.title}</div>
                         <div className="text-xs text-muted-foreground">
-                          /{item.slug} · {item.status}
+                          /{item.slug}
+                          {item.price && ` · $${item.price}`}
                         </div>
+                        <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
+                          {item.description}
+                        </p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <Button

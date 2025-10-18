@@ -9,92 +9,46 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Layout from "@/components/layout/Layout";
-import { PlaceholderPage } from "@/components/layout/PlaceholderPage";
+import About from "./pages/About";
+import Services from "./pages/Services";
+import CaseStudies from "./pages/CaseStudies";
+import Portfolio from "./pages/Portfolio";
+import Blog from "./pages/Blog";
+import Contact from "./pages/Contact";
 import { AuthProvider } from "@/context/AuthContext";
 import RequireAuth from "@/components/route/RequireAuth";
 import AdminLogin from "@/pages/admin/Login";
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminBlogs from "@/pages/admin/Blogs";
+import AdminCaseStudies from "@/pages/admin/CaseStudies";
+import AdminServices from "@/pages/admin/Services";
+import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthProvider>
-        <BrowserRouter>
-          <Routes>
+  <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
             <Route element={<Layout />}>
               <Route path="/" element={<Index />} />
-              <Route
-                path="/services"
-                element={
-                  <PlaceholderPage
-                    title="Our Services"
-                    description="Explore how Codecafe delivers websites, apps, DevOps, AI consulting, and intelligent chatbots."
-                  />
-                }
-              />
-              <Route
-                path="/case-studies"
-                element={
-                  <PlaceholderPage
-                    title="Case Studies"
-                    description="Stories about measurable impact we created for our clients."
-                  />
-                }
-              />
-              <Route
-                path="/portfolio"
-                element={
-                  <PlaceholderPage
-                    title="Portfolio"
-                    description="A curated selection of projects showcasing our craft."
-                  />
-                }
-              />
-              <Route
-                path="/blog"
-                element={
-                  <PlaceholderPage
-                    title="Blog"
-                    description="Insights on engineering, design, and AI."
-                  />
-                }
-              />
-              <Route
-                path="/contact"
-                element={
-                  <PlaceholderPage
-                    title="Contact"
-                    description="Tell us about your idea. We'll respond within 24 hours."
-                  />
-                }
-              />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/case-studies" element={<CaseStudies />} />
+              <Route path="/portfolio" element={<Portfolio />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/contact" element={<Contact />} />
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route element={<RequireAuth />}>
                 <Route path="/admin" element={<AdminDashboard />} />
                 <Route path="/admin/blogs" element={<AdminBlogs />} />
-                <Route
-                  path="/admin/case-studies"
-                  element={
-                    <PlaceholderPage
-                      title="Case Studies"
-                      description="Manage case studies here."
-                    />
-                  }
-                />
-                <Route
-                  path="/admin/services"
-                  element={
-                    <PlaceholderPage
-                      title="Services"
-                      description="Manage services here."
-                    />
-                  }
-                />
+                <Route path="/admin/case-studies" element={<AdminCaseStudies />} />
+                <Route path="/admin/services" element={<AdminServices />} />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
@@ -104,6 +58,7 @@ const App = () => (
       </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </ThemeProvider>
 );
 
 createRoot(document.getElementById("root")!).render(<App />);

@@ -1,36 +1,49 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { Blog, BlogStore } from "@/lib/datastore";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 
-export default function AdminBlogs() {
-  const { token, devMode } = useAuth();
-  const [items, setItems] = useState<Blog[]>([]);
+interface CaseStudy {
+  id: number;
+  title: string;
+  slug: string;
+  summary: string;
+  content: string;
+  cover_image: string | null;
+  status: "draft" | "published";
+  published_at: string | null;
+}
+
+export default function AdminCaseStudies() {
+  const { token } = useAuth();
+  const [items, setItems] = useState<CaseStudy[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const empty: Omit<Blog, "id"> = useMemo(
+  const empty: Omit<CaseStudy, "id" | "published_at"> = useMemo(
     () => ({
       title: "",
       slug: "",
-      excerpt: "",
+      summary: "",
       content: "",
       cover_image: "",
       status: "draft",
-      published_at: null,
     }),
-    [],
+    []
   );
 
-  const [form, setForm] = useState<Omit<Blog, "id">>(empty);
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const [form, setForm] = useState<Omit<CaseStudy, "id" | "published_at">>(empty);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   async function load() {
     setLoading(true);
     setError(null);
     try {
-      const data = await BlogStore.list(token || undefined);
+      const res = await fetch("/api/case-studies", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      if (!res.ok) throw new Error("Failed to load");
+      const data = await res.json();
       setItems(data);
     } catch (e: any) {
       setError(e.message || "Failed to load");
@@ -49,16 +62,28 @@ export default function AdminBlogs() {
     setError(null);
     try {
       if (editingId) {
-        const updated = await BlogStore.update(
-          editingId,
-          form,
-          token || undefined,
-        );
-        setItems((prev) =>
-          prev.map((i) => (i.id === updated.id ? updated : i)),
-        );
+        const res = await fetch(`/api/case-studies/${editingId}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error("Update failed");
+        const updated = await res.json();
+        setItems((prev) => prev.map((i) => (i.id === updated.id ? updated : i)));
       } else {
-        const created = await BlogStore.create(form, token || undefined);
+        const res = await fetch("/api/case-studies", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(form),
+        });
+        if (!res.ok) throw new Error("Create failed");
+        const created = await res.json();
         setItems((prev) => [created, ...prev]);
       }
       setForm(empty);
@@ -73,19 +98,23 @@ export default function AdminBlogs() {
     }
   }
 
-  async function onDelete(id: string) {
-    if (!confirm("Delete this post?")) return;
+  async function onDelete(id: number) {
+    if (!confirm("Delete this case study?")) return;
     try {
-      await BlogStore.remove(id, token || undefined);
+      const res = await fetch(`/api/case-studies/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error("Delete failed");
       setItems((prev) => prev.filter((i) => i.id !== id));
     } catch (e: any) {
       setError(e.message || "Delete failed");
     }
   }
 
-  function onEdit(item: Blog) {
+  function onEdit(item: CaseStudy) {
     setEditingId(item.id);
-    const { id, ...rest } = item;
+    const { id, published_at, ...rest } = item;
     setForm(rest);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -96,10 +125,10 @@ export default function AdminBlogs() {
         <div className="flex items-end justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-              Blogs
+              Case Studies
             </h1>
             <p className="mt-1 text-sm text-muted-foreground">
-              {devMode ? "Local storage (dev)" : "Server (remote)"}
+              Manage your portfolio case studies
             </p>
           </div>
         </div>
@@ -110,7 +139,7 @@ export default function AdminBlogs() {
             className="rounded-2xl border bg-card p-6 shadow-sm grid gap-3"
           >
             <h2 className="font-semibold">
-              {editingId ? "Edit post" : "New post"}
+              {editingId ? "Edit case study" : "New case study"}
             </h2>
             {error && (
               <div className="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
@@ -131,17 +160,13 @@ export default function AdminBlogs() {
               value={form.slug}
               onChange={(e) => setForm({ ...form, slug: e.target.value })}
               required
-              placeholder="unique-blog-slug"
             />
-            <p className="text-xs text-muted-foreground">
-              URL-friendly identifier (must be unique, e.g., "my-first-blog")
-            </p>
 
-            <label className="text-sm font-medium">Excerpt</label>
+            <label className="text-sm font-medium">Summary</label>
             <textarea
               className="rounded-md border bg-background px-3 py-2"
-              value={form.excerpt}
-              onChange={(e) => setForm({ ...form, excerpt: e.target.value })}
+              value={form.summary}
+              onChange={(e) => setForm({ ...form, summary: e.target.value })}
               rows={2}
             />
 
@@ -193,19 +218,26 @@ export default function AdminBlogs() {
           </form>
 
           <div className="rounded-2xl border bg-card p-6 shadow-sm">
-            <h2 className="font-semibold">All posts</h2>
+            <h2 className="font-semibold">All case studies</h2>
             {loading ? (
               <p className="mt-3 text-sm text-muted-foreground">Loading…</p>
             ) : items.length === 0 ? (
               <p className="mt-3 text-sm text-muted-foreground">
-                No posts yet.
+                No case studies yet.
               </p>
             ) : (
               <ul className="mt-3 divide-y">
                 {items.map((item) => (
                   <li key={item.id} className="py-3">
                     <div className="flex items-start justify-between gap-4">
-                      <div>
+                      <div className="flex-1">
+                        {item.cover_image && (
+                          <img
+                            src={item.cover_image}
+                            alt={item.title}
+                            className="w-full h-24 object-cover rounded-md mb-2"
+                          />
+                        )}
                         <div className="font-medium">{item.title}</div>
                         <div className="text-xs text-muted-foreground">
                           /{item.slug} · {item.status}

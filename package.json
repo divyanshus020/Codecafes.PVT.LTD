@@ -21,12 +21,18 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.4",
+    "@supabase/supabase-js": "^2.75.1",
+    "@tabler/icons-react": "^3.35.0",
+    "@types/react-scroll": "^1.8.10",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
-    "mysql2": "^3.15.2",
+    "react-scroll": "^1.9.3",
     "zod": "^3.25.76"
   },
   "devDependencies": {
@@ -78,7 +84,7 @@
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.12",
+    "framer-motion": "^12.23.24",
     "globals": "^16.3.0",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.539.0",

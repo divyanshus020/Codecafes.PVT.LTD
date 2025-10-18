@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
+import { UnicornStudioEmbed } from "@/components/animations/UnicornStudioEmbed";
 
 export default function AdminLogin() {
   const { login, devMode } = useAuth();
@@ -24,12 +25,22 @@ export default function AdminLogin() {
   }
 
   return (
-    <section className="py-20">
-      <div className="container max-w-md">
-        <div className="rounded-2xl border bg-card p-8 shadow-sm">
+    <section className="relative min-h-screen flex items-center justify-center py-20">
+      {/* Unicorn Studio Background */}
+      <div className="absolute inset-0 z-0">
+        <UnicornStudioEmbed 
+          projectId="NOw9ISicN1HqJ656KnGn" 
+          className="w-full h-full"
+        />
+      </div>
+      {/* Overlay for better readability */}
+      <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/60 via-black/50 to-black/60 pointer-events-none" />
+      
+      <div className="container max-w-md relative z-10">
+        <div className="rounded-2xl border border-white/20 bg-black/40 backdrop-blur-xl p-8 shadow-2xl">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold tracking-tight">Admin Login</h1>
-            <p className="mt-1 text-sm text-muted-foreground">
+            <h1 className="text-2xl font-bold tracking-tight text-white">Admin Login</h1>
+            <p className="mt-1 text-sm text-white/70">
               {devMode
                 ? "Dev mode: authenticating locally. Configure VITE_API_BASE_URL to use your PHP backend."
                 : "Using server authentication."}
@@ -37,7 +48,7 @@ export default function AdminLogin() {
           </div>
           <form onSubmit={onSubmit} className="grid gap-4">
             <div>
-              <label className="text-sm font-medium">Username</label>
+              <label className="text-sm font-medium text-white">Username</label>
               <input
                 className="mt-1 w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2"
                 value={username}
@@ -47,7 +58,7 @@ export default function AdminLogin() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium">Password</label>
+              <label className="text-sm font-medium text-white">Password</label>
               <input
                 type="password"
                 className="mt-1 w-full rounded-md border bg-background px-3 py-2 outline-none focus:ring-2"

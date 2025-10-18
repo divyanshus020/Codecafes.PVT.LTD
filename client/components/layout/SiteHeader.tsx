@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 
 const navItems = [
+  { to: "/about", label: "About" },
   { to: "/services", label: "Services" },
   { to: "/case-studies", label: "Case Studies" },
   { to: "/portfolio", label: "Portfolio" },
@@ -44,6 +46,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
+          <ThemeToggle />
           <Button asChild variant="ghost" size="sm">
             <Link to="/admin/login">Admin</Link>
           </Button>
@@ -52,31 +55,34 @@ export function SiteHeader() {
           </Button>
         </div>
 
-        <button
-          aria-label="Toggle menu"
-          className="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-md border bg-background"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <svg
-            className="size-5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+        <div className="md:hidden flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            aria-label="Toggle menu"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md border bg-background"
+            onClick={() => setOpen((v) => !v)}
           >
-            {open ? (
-              <path d="M18 6 6 18M6 6l12 12" />
-            ) : (
-              <>
-                <line x1="3" y1="6" x2="21" y2="6" />
-                <line x1="3" y1="12" x2="21" y2="12" />
-                <line x1="3" y1="18" x2="21" y2="18" />
-              </>
-            )}
-          </svg>
-        </button>
+            <svg
+              className="size-5"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {open ? (
+                <path d="M18 6 6 18M6 6l12 12" />
+              ) : (
+                <>
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </>
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
 
       {open && (

@@ -7,7 +7,7 @@ export default function AdminDashboard() {
   return (
     <section className="py-16">
       <div className="container">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
               Admin Dashboard
@@ -16,7 +16,7 @@ export default function AdminDashboard() {
               Signed in as {user?.username}. {devMode ? "(dev mode)" : null}
             </p>
           </div>
-          <Button variant="outline" onClick={logout}>
+          <Button variant="outline" onClick={logout} className="w-full sm:w-auto">
             Sign out
           </Button>
         </div>
