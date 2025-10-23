@@ -214,7 +214,7 @@ export default function CaseStudies() {
                 ))}
               </div>
               <blockquote className="text-lg md:text-xl font-medium leading-relaxed">
-                "Working with Codecafe was a game-changer for our business. They
+                "Working with DCodeCafe was a game-changer for our business. They
                 delivered a beautiful, high-performance platform that exceeded our
                 expectations. The team's expertise and dedication were evident
                 throughout the entire process."

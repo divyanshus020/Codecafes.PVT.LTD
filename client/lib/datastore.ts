@@ -12,7 +12,7 @@ export interface Blog {
   published_at?: string | null;
 }
 
-const LS_KEY = "codecafe_blogs";
+const LS_KEY = "DCodeCafe_blogs";
 
 interface BlogStore {
   list(token?: string): Promise<Blog[]>;

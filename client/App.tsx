@@ -22,6 +22,7 @@ import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminBlogs from "@/pages/admin/Blogs";
 import AdminCaseStudies from "@/pages/admin/CaseStudies";
 import AdminServices from "@/pages/admin/Services";
+import AdminPromptCourse from "@/pages/admin/PromptCourse";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 
 const queryClient = new QueryClient();
@@ -49,6 +50,7 @@ const App = () => (
                 <Route path="/admin/blogs" element={<AdminBlogs />} />
                 <Route path="/admin/case-studies" element={<AdminCaseStudies />} />
                 <Route path="/admin/services" element={<AdminServices />} />
+                <Route path="/admin/prompt-course" element={<AdminPromptCourse />} />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

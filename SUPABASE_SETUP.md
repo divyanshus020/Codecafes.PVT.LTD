@@ -8,7 +8,7 @@ Your backend has been successfully migrated from MySQL to Supabase! Follow these
 2. Sign up or log in
 3. Click "New Project"
 4. Fill in:
-   - **Project Name**: Codecafes (or your preferred name)
+   - **Project Name**: DCodeCafes (or your preferred name)
    - **Database Password**: Choose a strong password
    - **Region**: Select the closest region to your users
 5. Click "Create new project" and wait for it to initialize

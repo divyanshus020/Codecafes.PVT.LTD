@@ -22,7 +22,7 @@ const ADMIN_DEV = {
   password: "Preksh@2004",
 };
 
-const STORAGE_KEY = "codecafe_auth";
+const STORAGE_KEY = "DCodeCafe_auth";
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 

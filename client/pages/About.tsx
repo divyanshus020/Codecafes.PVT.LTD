@@ -164,7 +164,7 @@ export default function About() {
           </ScrollReveal>
           <ScrollReveal delay={0.2}>
             <p className="mt-4 sm:mt-5 max-w-2xl text-pretty text-sm sm:text-base md:text-lg text-white/80">
-              Codecafe is a creative technology studio dedicated to crafting
+              DCodeCafe is a creative technology studio dedicated to crafting
               exceptional digital experiences. We combine technical expertise
               with design thinking to help businesses thrive in the digital age.
             </p>

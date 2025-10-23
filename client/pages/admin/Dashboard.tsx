@@ -48,6 +48,15 @@ export default function AdminDashboard() {
               Update offerings and pricing
             </p>
           </Link>
+          <Link
+            to="/admin/prompt-course"
+            className="rounded-xl border p-6 hover:bg-accent/40 transition-colors"
+          >
+            <h3 className="font-semibold text-lg">Prompt Engineering Course</h3>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Complete guide to prompt engineering
+            </p>
+          </Link>
         </div>
       </div>
     </section>

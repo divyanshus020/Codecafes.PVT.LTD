@@ -156,7 +156,7 @@ export default function Services() {
             <ScrollReveal direction="left">
               <div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">
-                  Why partner with Codecafe?
+                  Why partner with DCodeCafe?
                 </h2>
               <p className="mt-4 text-muted-foreground">
                 We combine technical excellence with a deep understanding of

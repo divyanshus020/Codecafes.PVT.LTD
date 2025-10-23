@@ -105,7 +105,7 @@ export default function Index() {
         <div className="container px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-28 relative z-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-1 text-xs text-white">
             <span className="size-2 rounded-full bg-gradient-to-r from-primary to-violet-500" />
-            Codecafe — Creative IT Studio
+            DCodeCafe — Creative IT Studio
           </div>
           <h1 className="mt-6 max-w-4xl text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
             Build bold digital experiences with a partner obsessed with quality
@@ -443,10 +443,10 @@ export default function Index() {
                     <div>
                       <p className="font-medium">Email</p>
                       <a
-                        href="mailto:hello@codecafe.dev"
+                        href="mailto:hello@DCodeCafe.dev"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
-                        hello@codecafe.dev
+                        hello@DCodeCafe.dev
                       </a>
                     </div>
                   </div>
