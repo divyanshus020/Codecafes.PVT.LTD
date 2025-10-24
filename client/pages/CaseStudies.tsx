@@ -156,41 +156,44 @@ export default function CaseStudies() {
               </div>
             ) : (
               caseStudies.map((study) => (
-                <article
+                <Link
                   key={study.id}
-                  className="group overflow-hidden rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1"
+                  to={`/case-studies/${study.slug}`}
+                  className="group overflow-hidden rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1 block"
                 >
-                  <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 via-violet-500/10 to-fuchsia-500/10 relative overflow-hidden">
-                    {study.cover_image ? (
-                      <img
-                        src={study.cover_image}
-                        alt={study.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <div className="text-7xl font-bold text-primary/20">
-                          {study.title.charAt(0)}
+                  <article>
+                    <div className="aspect-[16/10] bg-gradient-to-br from-primary/10 via-violet-500/10 to-fuchsia-500/10 relative overflow-hidden">
+                      {study.cover_image ? (
+                        <img
+                          src={study.cover_image}
+                          alt={study.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-7xl font-bold text-primary/20">
+                            {study.title.charAt(0)}
+                          </div>
                         </div>
+                      )}
+                    </div>
+                    <div className="p-5 md:p-6">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
+                        <span className="size-1.5 rounded-full bg-primary" />
+                        Case Study
                       </div>
-                    )}
-                  </div>
-                  <div className="p-5 md:p-6">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground uppercase tracking-wide">
-                      <span className="size-1.5 rounded-full bg-primary" />
-                      Case Study
+                      <h3 className="mt-3 font-bold text-xl line-clamp-2">
+                        {study.title}
+                      </h3>
+                      <p className="mt-3 text-sm text-muted-foreground line-clamp-3 leading-relaxed">
+                        {study.summary || study.content.substring(0, 150) + "..."}
+                      </p>
+                      <div className="mt-5 flex items-center text-sm font-medium text-primary group-hover:translate-x-1 transition-transform">
+                        Read full story <ArrowRight className="ml-1 size-4" />
+                      </div>
                     </div>
-                    <h3 className="mt-3 font-bold text-xl line-clamp-2">
-                      {study.title}
-                    </h3>
-                    <p className="mt-3 text-sm text-muted-foreground line-clamp-3 leading-relaxed">
-                      {study.summary || study.content.substring(0, 150) + "..."}
-                    </p>
-                    <div className="mt-5 flex items-center text-sm font-medium text-primary group-hover:translate-x-1 transition-transform">
-                      Read full story <ArrowRight className="ml-1 size-4" />
-                    </div>
-                  </div>
-                </article>
+                  </article>
+                </Link>
               ))
             )}
           </div>

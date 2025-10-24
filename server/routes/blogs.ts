@@ -21,11 +21,36 @@ export const listBlogs: RequestHandler = async (req, res) => {
   res.json(data);
 };
 
+export const getBlogBySlug: RequestHandler = async (req, res) => {
+  if (!dbEnabled)
+    return res.status(503).json({ error: "Database not configured" });
+  
+  const { slug } = req.params as any;
+  const isAuthed = Boolean((req as any).user);
+  
+  let query = supabase.from("blogs").select("*").eq("slug", slug);
+  
+  if (!isAuthed) {
+    query = query.eq("status", "published");
+  }
+  
+  const { data, error } = await query.single();
+  
+  if (error) {
+    if (error.code === 'PGRST116') {
+      return res.status(404).json({ error: "Blog not found" });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+  
+  res.json(data);
+};
+
 export const createBlog: RequestHandler = async (req, res) => {
   if (!dbEnabled)
     return res.status(503).json({ error: "Database not configured" });
   
-  const { title, slug, excerpt, content, cover_image, status, published_at } =
+  const { title, slug, excerpt, content, cover_image, author_name, author_image, status, published_at } =
     req.body || {};
   
   if (!title || !slug || !content)
@@ -49,6 +74,8 @@ export const createBlog: RequestHandler = async (req, res) => {
       excerpt: excerpt || null,
       content,
       cover_image: cover_image || null,
+      author_name: author_name || null,
+      author_image: author_image || null,
       status: status || "draft",
       published_at: published_at || null,
     })
@@ -64,7 +91,7 @@ export const updateBlog: RequestHandler = async (req, res) => {
     return res.status(503).json({ error: "Database not configured" });
   
   const { id } = req.params as any;
-  const { title, slug, excerpt, content, cover_image, status, published_at } =
+  const { title, slug, excerpt, content, cover_image, author_name, author_image, status, published_at } =
     req.body || {};
   
   // Check if exists
@@ -96,6 +123,8 @@ export const updateBlog: RequestHandler = async (req, res) => {
   if (excerpt !== undefined) updateData.excerpt = excerpt;
   if (content !== undefined) updateData.content = content;
   if (cover_image !== undefined) updateData.cover_image = cover_image;
+  if (author_name !== undefined) updateData.author_name = author_name;
+  if (author_image !== undefined) updateData.author_image = author_image;
   if (status !== undefined) updateData.status = status;
   if (published_at !== undefined) updateData.published_at = published_at;
   

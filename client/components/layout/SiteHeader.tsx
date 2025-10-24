@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import { Logo } from "./Logo";
 
 const navItems = [
   { to: "/about", label: "About" },
@@ -19,13 +20,8 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="size-8 rounded-md bg-gradient-to-br from-primary to-violet-500" />
-          <span className="font-extrabold tracking-tight text-xl">
-            <span className="bg-gradient-to-r from-primary to-violet-500 bg-clip-text text-transparent">
-              DCodeCafe
-            </span>
-          </span>
+        <Link to="/" className="flex items-center">
+          <Logo className="h-10 w-auto text-foreground hover:text-primary transition-colors" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-6">
@@ -47,12 +43,6 @@ export function SiteHeader() {
 
         <div className="hidden md:flex items-center gap-2">
           <ThemeToggle />
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/admin/login">Admin</Link>
-          </Button>
-          <Button asChild size="sm" className="shadow-sm">
-            <Link to="/contact">Get a quote</Link>
-          </Button>
         </div>
 
         <div className="md:hidden flex items-center gap-2">
@@ -103,12 +93,6 @@ export function SiteHeader() {
                 {item.label}
               </NavLink>
             ))}
-            <Button asChild variant="ghost" size="sm" className="w-full">
-              <Link to="/admin/login">Admin</Link>
-            </Button>
-            <Button asChild size="sm" className="mt-2 w-full">
-              <Link to="/contact">Get a quote</Link>
-            </Button>
           </div>
         </div>
       )}

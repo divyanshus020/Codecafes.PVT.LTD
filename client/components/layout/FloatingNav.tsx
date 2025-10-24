@@ -6,8 +6,6 @@ import {
   IconMail,
   IconCode,
   IconInfoCircle,
-  IconShieldLock,
-  IconMessageCircle,
   IconMoon,
   IconSun,
 } from "@tabler/icons-react";
@@ -62,20 +60,6 @@ export function FloatingNav() {
       title: "Contact Us",
       icon: (
         <IconMail className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "/contact",
-    },
-    {
-      title: "Admin",
-      icon: (
-        <IconShieldLock className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "/admin/login",
-    },
-    {
-      title: "Get a Quote",
-      icon: (
-        <IconMessageCircle className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
       href: "/contact",
     },

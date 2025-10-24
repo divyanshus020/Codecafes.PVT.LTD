@@ -1,24 +1,16 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "@/context/AuthContext";
-import { Button } from "@/components/ui/button";
 
 export default function AdminDashboard() {
-  const { user, logout, devMode } = useAuth();
   return (
     <section className="py-16">
       <div className="container">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-              Admin Dashboard
-            </h1>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Signed in as {user?.username}. {devMode ? "(dev mode)" : null}
-            </p>
-          </div>
-          <Button variant="outline" onClick={logout} className="w-full sm:w-auto">
-            Sign out
-          </Button>
+        <div className="mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+            Admin Dashboard
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Manage your website content and settings
+          </p>
         </div>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <Link

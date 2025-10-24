@@ -35,11 +35,17 @@ export async function initSchema() {
       excerpt TEXT,
       content TEXT NOT NULL,
       cover_image VARCHAR(1024),
+      author_name VARCHAR(255),
+      author_image VARCHAR(1024),
       status VARCHAR(20) NOT NULL DEFAULT 'draft' CHECK (status IN ('draft', 'published')),
       published_at TIMESTAMPTZ,
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
       updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+    
+    -- Add author columns to existing blogs table (run this if table already exists)
+    -- ALTER TABLE blogs ADD COLUMN IF NOT EXISTS author_name VARCHAR(255);
+    -- ALTER TABLE blogs ADD COLUMN IF NOT EXISTS author_image VARCHAR(1024);
 
     CREATE TABLE IF NOT EXISTS case_studies (
       id BIGSERIAL PRIMARY KEY,

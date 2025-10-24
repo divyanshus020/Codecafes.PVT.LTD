@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
+import { Logo } from "./Logo";
 
 export function SiteFooter() {
   return (
     <footer className="border-t bg-background">
       <div className="container py-10 grid gap-8 md:grid-cols-4">
         <div className="col-span-2">
-          <Link to="/" className="flex items-center gap-2">
-            <div className="size-7 rounded-md bg-gradient-to-br from-primary to-violet-500" />
-            <span className="font-bold text-lg">DCodeCafe</span>
+          <Link to="/" className="flex items-center">
+            <Logo className="h-8 w-auto text-foreground hover:text-primary transition-colors" />
           </Link>
           <p className="mt-4 text-sm text-muted-foreground max-w-md">
             We design and build world-class digital products. Websites, apps, AI
@@ -51,10 +51,10 @@ export function SiteFooter() {
             </li>
             <li>
               <a
-                href="mailto:hello@DCodeCafe.dev"
+                href="mailto:contact@dcodecafe.qzz.io"
                 className="hover:text-foreground"
               >
-                hello@DCodeCafe.dev
+                contact@dcodecafe.qzz.io
               </a>
             </li>
           </ul>

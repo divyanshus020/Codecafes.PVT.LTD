@@ -5,7 +5,7 @@ import { handleDemo } from "./routes/demo";
 import { initSchema, dbEnabled } from "./db/supabase";
 import { login } from "./routes/admin";
 import { requireAuth } from "./middleware/auth";
-import { listBlogs, createBlog, updateBlog, deleteBlog } from "./routes/blogs";
+import { listBlogs, getBlogBySlug, createBlog, updateBlog, deleteBlog } from "./routes/blogs";
 import {
   listCaseStudies,
   createCaseStudy,
@@ -19,6 +19,7 @@ import {
   deleteService,
 } from "./routes/services";
 import { uploadRouter } from "./routes/upload";
+import { uploadMiddleware, parseDocument } from "./routes/parse-document";
 
 export function createServer() {
   const app = express();
@@ -49,6 +50,7 @@ export function createServer() {
 
   // Blogs
   app.get("/api/blogs", listBlogs);
+  app.get("/api/blogs/:slug", getBlogBySlug);
   app.post("/api/blogs", requireAuth, createBlog);
   app.put("/api/blogs/:id", requireAuth, updateBlog);
   app.delete("/api/blogs/:id", requireAuth, deleteBlog);
@@ -67,6 +69,9 @@ export function createServer() {
 
   // Uploads
   app.use("/api/upload", uploadRouter);
+
+  // Document parsing
+  app.post("/api/parse-document", requireAuth, uploadMiddleware, parseDocument);
 
   return app;
 }

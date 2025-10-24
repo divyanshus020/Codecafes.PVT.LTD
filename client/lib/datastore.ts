@@ -8,6 +8,8 @@ export interface Blog {
   excerpt?: string;
   content: string;
   cover_image?: string;
+  author_name?: string;
+  author_image?: string;
   status: "draft" | "published";
   published_at?: string | null;
 }

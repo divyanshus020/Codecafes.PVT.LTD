@@ -10,3 +10,21 @@
 export interface DemoResponse {
   message: string;
 }
+
+/**
+ * Blog post interface
+ */
+export interface Blog {
+  id: number;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  content: string;
+  cover_image: string | null;
+  author_name: string | null;
+  author_image: string | null;
+  status: string;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}

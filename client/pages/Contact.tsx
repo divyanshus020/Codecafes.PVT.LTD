@@ -45,8 +45,8 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Email",
-      value: "hello@DCodeCafe.dev",
-      href: "mailto:hello@DCodeCafe.dev",
+      value: "contact@dcodecafe.qzz.io",
+      href: "mailto:contact@dcodecafe.qzz.io",
     },
     {
       icon: Phone,

@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { DocumentParser } from "@/components/admin/DocumentParser";
 
 interface CaseStudy {
   id: number;
@@ -119,6 +120,17 @@ export default function AdminCaseStudies() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function handleDocumentExtracted(data: any) {
+    setForm((prev) => ({
+      ...prev,
+      title: data.title || prev.title,
+      content: data.content || prev.content,
+      summary: data.excerpt || prev.summary,
+      // Auto-generate slug from title if not editing
+      slug: editingId ? prev.slug : (data.title || prev.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    }));
+  }
+
   return (
     <section className="py-16">
       <div className="container">
@@ -146,6 +158,16 @@ export default function AdminCaseStudies() {
                 {error}
               </div>
             )}
+            
+            {/* Document Parser */}
+            <DocumentParser onDataExtracted={handleDocumentExtracted} />
+            
+            <div className="border-t pt-3">
+              <p className="text-sm font-medium text-muted-foreground mb-3">
+                Or fill manually:
+              </p>
+            </div>
+            
             <label className="text-sm font-medium">Title</label>
             <input
               className="rounded-md border bg-background px-3 py-2"

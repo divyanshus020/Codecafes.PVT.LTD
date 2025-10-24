@@ -5,17 +5,7 @@ import { useState } from "react";
 import { ArrowRight, Calendar, Clock, Tag } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
 import { UnicornStudioEmbed } from "@/components/animations/UnicornStudioEmbed";
-
-interface Blog {
-  id: number;
-  title: string;
-  slug: string;
-  excerpt: string;
-  content: string;
-  cover_image: string | null;
-  status: string;
-  published_at: string | null;
-}
+import type { Blog } from "@shared/api";
 
 export default function Blog() {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -87,8 +77,9 @@ export default function Blog() {
                 Featured Article
               </h2>
             </div>
-            <article className="group overflow-hidden rounded-3xl border bg-card hover:shadow-2xl transition-all">
-              <div className="grid md:grid-cols-2 gap-0">
+            <Link to={`/blog/${featuredPost.slug}`}>
+              <article className="group overflow-hidden rounded-3xl border bg-card hover:shadow-2xl transition-all">
+                <div className="grid md:grid-cols-2 gap-0">
                 <div className="aspect-[16/10] md:aspect-auto bg-gradient-to-br from-primary/10 via-violet-500/10 to-fuchsia-500/10 relative overflow-hidden">
                   {featuredPost.cover_image ? (
                     <img
@@ -134,8 +125,9 @@ export default function Blog() {
                     Read full article <ArrowRight className="ml-1 size-4" />
                   </div>
                 </div>
-              </div>
-            </article>
+                </div>
+              </article>
+            </Link>
           </div>
         </section>
       )}
@@ -173,10 +165,8 @@ export default function Blog() {
               </div>
             ) : (
               recentPosts.map((blog) => (
-                <article
-                  key={blog.id}
-                  className="group rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1"
-                >
+                <Link key={blog.id} to={`/blog/${blog.slug}`}>
+                  <article className="group rounded-2xl border bg-card hover:shadow-xl transition-all hover:-translate-y-1">
                   <div className="aspect-[16/9] bg-gradient-to-br from-primary/10 via-violet-500/10 to-fuchsia-500/10 relative overflow-hidden rounded-t-2xl">
                     {blog.cover_image ? (
                       <img
@@ -221,7 +211,8 @@ export default function Blog() {
                       Read more <ArrowRight className="ml-1 size-4" />
                     </div>
                   </div>
-                </article>
+                  </article>
+                </Link>
               ))
             )}
           </div>

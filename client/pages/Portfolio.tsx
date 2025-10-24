@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { ExternalLink, Github, ArrowRight } from "lucide-react";
 import { ScrollReveal } from "@/components/animations/ScrollReveal";
+import { UnicornStudioEmbed } from "@/components/animations/UnicornStudioEmbed";
 
 interface PortfolioItem {
   id: number;
@@ -91,20 +92,26 @@ export default function Portfolio() {
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-          <div className="absolute -top-24 left-1/2 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-gradient-to-r from-primary/25 via-violet-500/20 to-fuchsia-500/20 blur-3xl" />
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-foreground/10 to-transparent" />
+      <section className="relative overflow-hidden min-h-screen flex items-center">
+        {/* Unicorn Studio Background */}
+        <div className="absolute inset-0 z-0">
+          <UnicornStudioEmbed 
+            projectId="8yxkLieRxYLDITLx9xPf" 
+            className="w-full h-full"
+          />
         </div>
-        <div className="container px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-28">
-          <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs text-muted-foreground">
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 z-[1] bg-gradient-to-b from-black/50 via-black/30 to-background pointer-events-none" />
+        
+        <div className="container px-4 sm:px-6 lg:px-8 py-12 sm:py-16 md:py-20 lg:py-28 relative z-10">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-1 text-xs text-white">
             <span className="size-2 rounded-full bg-gradient-to-r from-primary to-violet-500" />
             Portfolio
           </div>
-          <h1 className="mt-6 max-w-4xl text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+          <h1 className="mt-6 max-w-4xl text-balance text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white">
             Crafting digital experiences that inspire
           </h1>
-          <p className="mt-4 sm:mt-5 max-w-2xl text-pretty text-sm sm:text-base md:text-lg text-muted-foreground">
+          <p className="mt-4 sm:mt-5 max-w-2xl text-pretty text-sm sm:text-base md:text-lg text-white/80">
             A curated selection of our finest work. Each project represents our
             commitment to excellence, innovation, and delivering exceptional
             results for our clients.

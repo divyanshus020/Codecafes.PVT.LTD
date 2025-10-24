@@ -443,10 +443,10 @@ export default function Index() {
                     <div>
                       <p className="font-medium">Email</p>
                       <a
-                        href="mailto:hello@DCodeCafe.dev"
+                        href="mailto:contact@dcodecafe.qzz.io"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
-                        hello@DCodeCafe.dev
+                        contact@dcodecafe.qzz.io
                       </a>
                     </div>
                   </div>

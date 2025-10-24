@@ -3,6 +3,7 @@ import { Blog, BlogStore } from "@/lib/datastore";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
 import { ImageUpload } from "@/components/admin/ImageUpload";
+import { DocumentParser } from "@/components/admin/DocumentParser";
 
 export default function AdminBlogs() {
   const { token, devMode } = useAuth();
@@ -17,6 +18,8 @@ export default function AdminBlogs() {
       excerpt: "",
       content: "",
       cover_image: "",
+      author_name: "",
+      author_image: "",
       status: "draft",
       published_at: null,
     }),
@@ -90,6 +93,17 @@ export default function AdminBlogs() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function handleDocumentExtracted(data: any) {
+    setForm((prev) => ({
+      ...prev,
+      title: data.title || prev.title,
+      content: data.content || prev.content,
+      excerpt: data.excerpt || prev.excerpt,
+      // Auto-generate slug from title if not editing
+      slug: editingId ? prev.slug : (data.title || prev.title).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+    }));
+  }
+
   return (
     <section className="py-16">
       <div className="container">
@@ -117,6 +131,16 @@ export default function AdminBlogs() {
                 {error}
               </div>
             )}
+            
+            {/* Document Parser */}
+            <DocumentParser onDataExtracted={handleDocumentExtracted} />
+            
+            <div className="border-t pt-3">
+              <p className="text-sm font-medium text-muted-foreground mb-3">
+                Or fill manually:
+              </p>
+            </div>
+            
             <label className="text-sm font-medium">Title</label>
             <input
               className="rounded-md border bg-background px-3 py-2"
@@ -161,6 +185,21 @@ export default function AdminBlogs() {
               value={form.cover_image || ""}
               onChange={(url) => setForm({ ...form, cover_image: url })}
               onClear={() => setForm({ ...form, cover_image: "" })}
+            />
+
+            <label className="text-sm font-medium">Author Name</label>
+            <input
+              className="rounded-md border bg-background px-3 py-2"
+              value={form.author_name || ""}
+              onChange={(e) => setForm({ ...form, author_name: e.target.value })}
+              placeholder="John Doe"
+            />
+
+            <label className="text-sm font-medium">Author Image</label>
+            <ImageUpload
+              value={form.author_image || ""}
+              onChange={(url) => setForm({ ...form, author_image: url })}
+              onClear={() => setForm({ ...form, author_image: "" })}
             />
 
             <label className="text-sm font-medium">Status</label>
